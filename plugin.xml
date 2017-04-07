@@ -111,6 +111,8 @@
 
     <!-- ios -->
     <platform name="ios">
+        <hook type="after_plugin_install" src="scripts/add_bridging_header.js" />
+
         <config-file target="*-Info.plist" parent="NSLocationAlwaysUsageDescription">
             <string>${EXECUTABLE_NAME} Would Like to Use Your Current Location Even In Background.</string>
         </config-file>
@@ -127,7 +129,7 @@
             <param name="ios-package" value="HWPGeofencePlugin"/>
           </feature>
         </config-file>
-        <header-file src="src/ios/Geofence-Plugin-Bridging-Header.h" />
+        <header-file src="src/ios/cordova-plugin-geofence-Bridging-Header.h" />
         <source-file src="src/ios/GeofencePlugin.swift"/>
         <source-file src="src/ios/SwiftData.swift"/>
         <source-file src="src/ios/SwiftyJson.swift"/>
