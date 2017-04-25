@@ -397,19 +397,31 @@ class GeoNotificationManager : NSObject, CLLocationManagerDelegate {
                 notifyAbout(geoNotification)
             }
             
-            // unwrap the UrlStr value and convert to a URL. If properly formatted, if properly formatted, append the transition
+            // unwrap the UrlStr value, string any surrounding quotes and convert to a URL. If properly formatted, append the transition
             // type (1 - enter, 2 - exit) to the URL and send it to the service.
+            // Also extract the DataStr JSON object and post it
             // Convert the response data into a string then store it back into UserDefaults under the ResStr key
-            if let apiEndpoint = UserDefaults.standard.object(forKey: "UrlStr") as? String, let url = URL(string: apiEndpoint) {
-                let endpointURL = url.appendingPathComponent("\(transitionType)")
+            if var apiEndpoint = UserDefaults.standard.object(forKey: "UrlStr") as? String,
+                let dataString = UserDefaults.standard.object(forKey: "DataStr") as? String {
+                // string any leading quotes from the URL as they seem to be included when saved from the web app
+                apiEndpoint = apiEndpoint.replacingOccurrences(of: "\"", with: "")
                 
-                let dataTask = URLSession.shared.dataTask(with: endpointURL, completionHandler: { (data, response, error) in
-                    if let data = data, let responseString = String(data: data, encoding: String.Encoding.utf8) {
-                        UserDefaults.standard.set(responseString, forKey: "ResStr")
-                    }
-                })
-                
-                dataTask.resume()
+                if let url = URL(string: apiEndpoint), let postBody = dataString.data(using: String.Encoding.utf8) {
+                    let endpointURL = url.appendingPathComponent("\(transitionType)")
+                    
+                    var request = URLRequest(url: endpointURL)
+                    request.httpMethod = "POST"
+                    request.httpBody = postBody
+                    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+                    
+                    let dataTask = URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) in
+                        if let data = data, let responseString = String(data: data, encoding: String.Encoding.utf8) {
+                            UserDefaults.standard.set(responseString, forKey: "ResStr")
+                        }
+                    })
+                    
+                    dataTask.resume()
+                }
             }
             
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "handleTransition"), object: geoNotification.rawString(String.Encoding.utf8, options: []))
