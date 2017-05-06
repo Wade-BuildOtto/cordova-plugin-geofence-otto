@@ -11,8 +11,8 @@ module.exports = function(context) {
   var projectName = config.name();
 
   var platformRoot = path.join(context.opts.projectRoot, 'platforms/ios');
-  var projectBridgingHeaderPath = path.join(platformRoot, projectName,
-      'Bridging-Header.h');
+  var projectBridgingHeaderPath = path.join(platformRoot, projectName,'Bridging-Header.h');
+  // var projectDelegatePath = path.join(platformRoot, projectName,'AppDelegate.m');
 
   var pluginId = context.opts.plugin.id;
   var pluginBridgingHeaderFilename = pluginId + '-Bridging-Header.h';
@@ -25,4 +25,6 @@ module.exports = function(context) {
   if (!regExp.test(data)) {
     fs.appendFileSync(projectBridgingHeaderPath, importDirective + "\n");
   }
+
+  // fs.createReadStream(srcfile).pipe(fs.createWriteStream(destfile));
 }
