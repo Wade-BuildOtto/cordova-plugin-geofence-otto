@@ -127,6 +127,8 @@
           </feature>
         </config-file>
         <header-file src="src/ios/cordova-plugin-geofence-Bridging-Header.h" />
+        <header-file src="src/ios/AppDelegate+LocationStartup.h" />
+        <source-file src="src/ios/AppDelegate+LocationStartup.m" />
         <source-file src="src/ios/GeofencePlugin.swift"/>
         <source-file src="src/ios/SwiftData.swift"/>
         <source-file src="src/ios/SwiftyJson.swift"/>
