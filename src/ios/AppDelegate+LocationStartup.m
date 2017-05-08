@@ -30,17 +30,23 @@
 
 - (BOOL)geo_application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     BOOL didLaunch = [self geo_application:application didFinishLaunchingWithOptions:launchOptions];
-
-    self.geoManager = [[GeoNotificationManager alloc] init];
-
+    
     if (launchOptions[UIApplicationLaunchOptionsLocationKey]) {
         self.geoManager = [[GeoNotificationManager alloc] init];
         
         [self.geoManager.locationManager startUpdatingLocation];
         [self.geoManager.locationManager startMonitoringSignificantLocationChanges];
     }
-
+    
     return didLaunch;
+}
+
+- (void)setGeoManager:(GeoNotificationManager *)geoManager {
+    objc_setAssociatedObject(self, @selector(geoManager), geoManager, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (GeoNotificationManager *)geoManager {
+    return objc_getAssociatedObject(self, @selector(geoManager));
 }
 
 @end
