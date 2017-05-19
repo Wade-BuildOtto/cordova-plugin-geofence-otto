@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate+LocationStartup.h"
-#import "GeoFencev2-Swift.h"
+#import "HomeOtto-Swift.h" //Change to ProjectName-Swift.h
 #import <objc/runtime.h>
 
 @interface AppDelegate()
@@ -30,14 +30,14 @@
 
 - (BOOL)geo_application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     BOOL didLaunch = [self geo_application:application didFinishLaunchingWithOptions:launchOptions];
-    
+
     if (launchOptions[UIApplicationLaunchOptionsLocationKey]) {
         self.geoManager = [[GeoNotificationManager alloc] init];
-        
+
         [self.geoManager.locationManager startUpdatingLocation];
         [self.geoManager.locationManager startMonitoringSignificantLocationChanges];
     }
-    
+
     return didLaunch;
 }
 
