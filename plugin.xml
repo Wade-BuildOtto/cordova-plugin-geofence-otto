@@ -113,9 +113,27 @@
     <platform name="ios">
         <hook type="after_plugin_install" src="scripts/add_bridging_header.js" />
 
-        <config-file target="*-Info.plist" parent="NSLocationAlwaysUsageDescription">
+        <!-- <config-file target="*-Info.plist" parent="NSLocationAlwaysUsageDescription">
             <string>${EXECUTABLE_NAME} Would Like to Use Your Current Location Even In Background.</string>
+        </config-file> -->
+
+        <!-- New -->
+        <preference name="GEOFENCE_ALWAYS_USAGE_DESCRIPTION" default="${EXECUTABLE_NAME} Would Like to Use Your Current Location Even In Background." />
+        <config-file target="*-Info.plist" parent="NSLocationAlwaysUsageDescription">
+            <string>$GEOFENCE_ALWAYS_USAGE_DESCRIPTION</string>
         </config-file>
+
+        <preference name="GEOFENCE_IN_USE_USAGE_DESCRIPTION" default="${EXECUTABLE_NAME} Would Like to Use Your Current Location When In Use." />
+        <config-file target="*-Info.plist" parent="NSLocationWhenInUseUsageDescription">
+            <string>$GEOFENCE_IN_USE_USAGE_DESCRIPTION</string>
+        </config-file>
+
+        <preference name="GEOFENCE_ALWAYS_AND_IN_USE_USAGE_DESCRIPTION" default="${EXECUTABLE_NAME} Would Like to Use Your Current Location When In Use And Even In Background." />
+        <config-file target="*-Info.plist" parent="NSLocationAlwaysAndWhenInUseUsageDescription">
+            <string>$GEOFENCE_IN_USE_USAGE_DESCRIPTION</string>
+        </config-file>
+        <!-- End -->
+
         <config-file target="*-Info.plist" parent="UIBackgroundModes">
             <array>
                 <string>remote-notification</string>
